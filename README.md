@@ -67,6 +67,11 @@ bash /tmp/install-waydroid-gapps.sh verbose
 - At least 10GB free disk space
 - 30-40 minutes for initial setup
 
+### Step 0: Clone this Repo
+```powershell
+git clone https://github.com/silentone12725/Android-on-WSL2.git
+```
+
 ### Step 1: Build Android-Ready Kernel
 
 **On Windows** (Right-click → Run as Administrator):
