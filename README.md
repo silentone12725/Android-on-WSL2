@@ -137,6 +137,156 @@ waydroid show-full-ui
 
 🎉 **You now have Android running on Windows via WSL2!**
 
+## 🌐 Managing Android Files
+
+### Web-Based File Manager
+
+The included ADB file manager provides an easy way to transfer files between Windows/Linux and Android.
+
+**Start the server:**
+```bash
+python3 adb_file_manager.py
+```
+
+**Open in browser:** `http://localhost:8765`
+
+### Features
+- **Dual-pane UI**: Windows/Linux (left) ↔ Android (right)
+- **Drag & drop**: Multi-file selection and transfer
+- **APK installer**: Direct install from host
+- **Windows drives**: Browse C:, D:, etc. on Windows
+- **Virtual scrolling**: Handle thousands of files smoothly
+
+### Usage Examples
+
+**Transfer photos from Android to Windows:**
+1. Left pane: Navigate to `C:\Users\YourName\Pictures`
+2. Right pane: Navigate to `/sdcard/DCIM/Camera`
+3. Select photos in right pane
+4. Click **PULL TO HOST**
+
+**Install an APK:**
+1. Left pane: Navigate to your APK location
+2. Select the APK file
+3. Click **INSTALL**
+
+**Push files to Android:**
+1. Left pane: Select files/folders
+2. Right pane: Navigate to destination (e.g., `/sdcard/Download`)
+3. Click **PUSH TO DEVICE**
+
+## 🔧 Additional Functionality
+
+### Enhance Your Android Experience
+
+After basic setup, you can add powerful features using the [waydroid_script](https://github.com/casualsnek/waydroid_script) toolkit:
+
+**Quick Install:**
+```bash
+# Install dependencies and clone
+sudo apt-get install -y python3 python3-pip lzip sqlite3
+git clone https://github.com/casualsnek/waydroid_script.git
+cd waydroid_script
+pip3 install -r requirements.txt
+```
+
+### Essential Enhancements
+
+#### 1. ARM Translation (Must-Have!)
+
+Most Android apps are ARM-only. Enable them on x86:
+
+```bash
+# Install libhoudini for ARM app support
+sudo python3 main.py install libhoudini
+
+# Restart Waydroid
+sudo waydroid session stop
+sudo waydroid session start
+
+# Verify (should show ARM architectures)
+waydroid shell getprop ro.product.cpu.abilist
+```
+
+#### 2. Google Play Certification
+
+Fix "Device not certified" errors:
+
+```bash
+# Get your device ID
+sudo python3 main.py certified
+
+# Register at: https://www.google.com/android/uncertified/
+# Wait 10-20 minutes, then clear Play Store cache:
+waydroid shell pm clear com.android.vending
+waydroid shell pm clear com.google.android.gms
+```
+
+#### 3. Widevine DRM
+
+Enable Netflix, Disney+, and other streaming services:
+
+```bash
+# Install Widevine L3
+sudo python3 main.py install widevine
+
+# Restart and clear streaming app data
+sudo waydroid session stop
+sudo waydroid session start
+```
+
+#### 4. Root Access (Advanced)
+
+For power users who need system-level access:
+
+```bash
+# Install Magisk
+sudo python3 main.py install magisk
+
+# Restart and configure in Android UI
+sudo waydroid session stop
+sudo waydroid session start
+waydroid show-full-ui
+```
+
+**Warning:** Banking apps may refuse to run with root enabled.
+
+### Automated Setup Script
+
+Complete enhancement in one command:
+
+```bash
+#!/bin/bash
+# Save as: enhance-waydroid.sh
+
+sudo waydroid session start
+cd waydroid_script
+
+# ARM translation + DRM + Certification
+sudo python3 main.py install libhoudini
+sudo python3 main.py install widevine
+sudo python3 main.py certified
+
+# Restart
+sudo waydroid session stop
+sudo waydroid session start
+
+echo "Setup complete! Register device at:"
+echo "https://www.google.com/android/uncertified/"
+```
+
+Run with: `bash enhance-waydroid.sh`
+
+### Feature Comparison
+
+| Feature | Best For | Command |
+|---------|----------|---------|
+| **libhoudini** | ARM app compatibility | `sudo python3 main.py install libhoudini` |
+| **Widevine** | Netflix, streaming apps | `sudo python3 main.py install widevine` |
+| **Certification** | Play Store access | `sudo python3 main.py certified` |
+| **Magisk** | Root access, mods | `sudo python3 main.py install magisk` |
+| **microG** | Privacy-focused | `sudo python3 main.py install microg` |
+
 ## 🎮 Using Android on WSL2
 
 ### First Launch Setup
@@ -206,60 +356,6 @@ waydroid shell getprop
 
 # Monitor Android logs
 waydroid logcat
-```
-
-## 🌐 Managing Android Files
-
-### Web-Based File Manager
-
-The included ADB file manager provides an easy way to transfer files between Windows/Linux and Android.
-
-**Start the server:**
-```bash
-python3 adb_file_manager.py
-```
-
-**Open in browser:** `http://localhost:8765`
-
-### Features
-- **Dual-pane UI**: Windows/Linux (left) ↔ Android (right)
-- **Drag & drop**: Multi-file selection and transfer
-- **APK installer**: Direct install from host
-- **Windows drives**: Browse C:, D:, etc. on Windows
-- **Virtual scrolling**: Handle thousands of files smoothly
-
-### Usage Examples
-
-**Transfer photos from Android to Windows:**
-1. Left pane: Navigate to `C:\Users\YourName\Pictures`
-2. Right pane: Navigate to `/sdcard/DCIM/Camera`
-3. Select photos in right pane
-4. Click **PULL TO HOST**
-
-**Install an APK:**
-1. Left pane: Navigate to your APK location
-2. Select the APK file
-3. Click **INSTALL**
-
-**Push files to Android:**
-1. Left pane: Select files/folders
-2. Right pane: Navigate to destination (e.g., `/sdcard/Download`)
-3. Click **PUSH TO DEVICE**
-
-### Command-Line Alternative
-
-```bash
-# Push file to Android
-adb push myfile.txt /sdcard/Download/
-
-# Pull file from Android
-adb pull /sdcard/Download/myfile.txt ~/
-
-# Install APK
-adb install myapp.apk
-
-# Browse Android filesystem
-adb shell ls -la /sdcard/
 ```
 
 ## 🔧 Troubleshooting
