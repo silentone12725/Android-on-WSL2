@@ -35,8 +35,6 @@ This project enables you to run Android apps and the full Android UI on WSL2 by:
 | `kernel-binder-build.sh` | Kernel compilation | Automatically called by PowerShell |
 | `install-waydroid-gapps.sh` | Android setup | Run once after kernel is ready |
 | `adb_file_manager.py` | File management UI | Optional, for easy file transfers |
-| `.gitattributes` | Git configuration | Automatic line ending handling |
-| `LICENSE` | MIT License | Legal terms |
 
 ### Verbose Mode
 
@@ -417,26 +415,6 @@ sudo modprobe snd-usb-audio
 
 **Note**: Audio in WSL2 is experimental. For best results, use WSLg (Windows 11) or a third-party X server.
 
-## 🎯 Common Use Cases
-
-### Gaming on Android
-
-```bash
-# Launch Waydroid
-waydroid show-full-ui
-
-# Install game from Play Store
-# Performance tip: Close other apps for better FPS
-```
-
-**Tested games**:
-- Subway Surfers ✅
-- Among Us ✅
-- Alto's Odyssey ✅
-- 2D games generally work well
-
-**Note**: Heavy 3D games may have performance issues.
-
 ### Development & Testing
 
 ```bash
@@ -453,22 +431,6 @@ waydroid shell
 adb devices
 adb logcat
 adb shell dumpsys
-```
-
-### Social Media Apps
-
-Most social apps work perfectly:
-- WhatsApp ✅
-- Instagram ✅
-- Twitter/X ✅
-- TikTok ✅
-- Discord ✅
-
-### Streaming Apps
-
-```bash
-# Netflix, YouTube, Spotify all work
-# Launch Android and install from Play Store
 ```
 
 **Note**: DRM-protected content may have limitations.
@@ -648,12 +610,6 @@ Then delete `C:\Users\YourName\wsl-kernel\` from Windows.
 - **WSL Issues**: Report at [WSL GitHub](https://github.com/microsoft/WSL)
 - **This Project**: Use GitHub Issues for toolkit-specific problems
 
-### Video Tutorials
-Search YouTube for:
-- "WSL2 Android Waydroid"
-- "Android on Windows 11"
-- "Custom WSL2 kernel"
-
 ## 🤝 Contributing
 
 Contributions welcome! Areas of interest:
@@ -702,30 +658,6 @@ Contributions welcome! Areas of interest:
 | Waydroid | 1.4.2+ | ✅ Working |
 | Android | 11 | ✅ Full support |
 
-### App Compatibility
-
-**Fully Working:**
-- Google Play Store
-- YouTube
-- Gmail
-- Google Maps
-- WhatsApp
-- Instagram
-- Twitter/X
-- Discord
-- Spotify
-- Most 2D games
-
-**Partial Support:**
-- Heavy 3D games (reduced performance)
-- Apps requiring camera (experimental)
-- Banking apps (may have SafetyNet issues)
-
-**Known Issues:**
-- Some DRM-protected content
-- Apps requiring hardware sensors
-- Fingerprint authentication
-
 ## 📄 License
 
 MIT License - See `LICENSE` file for details
@@ -752,105 +684,11 @@ MIT License - See `LICENSE` file for details
 - **Data Storage**: Android data stored in `/var/lib/waydroid/`
 - **File Isolation**: Android can't access Windows files without explicit transfer
 
-### Best Practices
-```bash
-# Review Android app permissions regularly
-waydroid shell pm list permissions -d
-
-# Check installed apps
-waydroid app list
-
-# Monitor network connections
-waydroid shell netstat -tuln
-
-# Backup Android data
-sudo tar -czf waydroid-backup.tar.gz /var/lib/waydroid/
-```
-
 ### Privacy Notes
 - This setup does NOT bypass Google's SafetyNet
 - Banking apps may detect "rooted" environment
 - Some DRM content may be restricted
 - Android device ID is unique per Waydroid installation
-
-## 🚀 Advanced Usage
-
-### Custom Waydroid Properties
-
-```bash
-# Edit Waydroid properties
-sudo nano /var/lib/waydroid/waydroid_base.prop
-
-# Useful tweaks:
-# ro.sf.lcd_density=320        # Change DPI
-# ro.debuggable=1              # Enable debugging
-# persist.waydroid.multi_windows=true  # Multi-window mode
-```
-
-### Performance Tuning
-
-```bash
-# Allocate more RAM to Android
-sudo waydroid prop set waydroid.heap_size 512M
-
-# Enable hardware acceleration (experimental)
-sudo waydroid prop set persist.waydroid.uevent true
-
-# Restart to apply changes
-sudo waydroid session stop
-sudo waydroid session start
-```
-
-### Automation Scripts
-
-```bash
-# Auto-start Waydroid on WSL boot
-echo "waydroid session start &" >> ~/.bashrc
-
-# Create desktop shortcut (if using WSLg)
-cat > ~/Desktop/Waydroid.desktop << 'EOF'
-[Desktop Entry]
-Type=Application
-Name=Android
-Exec=waydroid show-full-ui
-Icon=android
-Terminal=false
-EOF
-chmod +x ~/Desktop/Waydroid.desktop
-```
-
-### Scripted App Installation
-
-```bash
-# Install multiple APKs at once
-for apk in ~/Downloads/*.apk; do
-    waydroid app install "$apk"
-done
-
-# Install from URL
-wget -O myapp.apk "https://example.com/app.apk"
-waydroid app install myapp.apk
-rm myapp.apk
-```
-
-## 📈 Benchmarks
-
-Performance comparison on typical hardware (Intel i5-11400, 16GB RAM):
-
-| Task | Time |
-|------|------|
-| Android cold boot | 15-20 seconds |
-| App launch (light) | 2-3 seconds |
-| App launch (heavy) | 5-8 seconds |
-| File transfer (100MB) | 8-12 seconds |
-| Play Store install | Variable |
-
-**Frame rates** (measured in light games):
-- 2D games: 45-60 FPS
-- Light 3D: 25-40 FPS
-- Heavy 3D: 10-25 FPS
-
-*Results vary based on CPU, RAM, and disk speed*
 
 ---
 
