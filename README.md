@@ -148,6 +148,27 @@ waydroid show-full-ui
 
 The included ADB file manager provides an easy way to transfer files between Windows/Linux and Android.
 
+The script will automatically send the adb_file_manager.py file to the $HOME Directory on Ubuntu.
+
+Run 
+```bash
+waydroid show-full-ui
+```
+
+install adb and connect to waydroid (in a separate Ubuntu window)
+
+**Install ADB**
+```bash
+sudo apt update 
+sudo apt upgrade
+sudo apt install adb
+```
+
+**Connect ADB to Waydroid**
+```bash
+waydroid adb connect
+```
+
 **Start the server:**
 ```bash
 python3 adb_file_manager.py
